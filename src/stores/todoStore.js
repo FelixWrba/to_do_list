@@ -4,7 +4,7 @@ import { ref, watch } from 'vue';
 export const useTodoStore = defineStore('todo', () => {
   // Todo structure: { name: string; description: string; done: boolean; dueDate: "yyyy-mm-dd"; id: number; }
   // load todos from localStorage if they exist
-  const todos = ref(JSON.parse(localStorage.getItem('todos') || '[]'));
+  const todos = ref(JSON.parse(localStorage.getItem('todos') || '[{ "name": "Test", "description": "This is a simple test to-do.", "done": true, "dueDate": "yyyy-mm-dd", "id": 1 }]'));
 
   // sync todos with localStorage
   watch(todos, (newTodos) => {
@@ -13,6 +13,14 @@ export const useTodoStore = defineStore('todo', () => {
 
   function addTodo(todo) {
     todos.value = [...todos.value, todo];
+  }
+
+  function setDone(id, done) {
+    const index = todos.value.findIndex(todo => todo.id === id);
+    if (index < 0) return false;
+
+    todos.value[index].done = done;
+    return true;
   }
 
   function editTodo(id, newTodo) {
@@ -27,15 +35,11 @@ export const useTodoStore = defineStore('todo', () => {
     todos.value = todos.value.filter(todo => todo.id !== id);
   }
 
-  function setTodos(newTodos) {
-    todos.value = [...newTodos];
-  }
-
   return {
     todos,
     addTodo,
+    setDone,
     editTodo,
     deleteTodo,
-    setTodos,
   }
 });

@@ -10,3 +10,11 @@
 body {
   font-family: 'Roboto', sans-serif;
 }
+
+input[type=checkbox] {
+  @apply rounded-full accent-green-500 size-5;
+}
+
+.icon-btn {
+  @apply size-9 p-2 rounded hover:text-green-500 hover:shadow-sm cursor-pointer transition-all duration-300;
+}
