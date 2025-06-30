@@ -1,11 +1,13 @@
 <template>
   <li class="flex gap-2 items-center">
-    <input type="checkbox" :checked="done" @change="e => emit('set-done', props.id, e.target.checked)" />
+    <input type="checkbox" :checked="done" @change="e => emit('set-done', props.id, e.target.checked)" title="Mark to-do as done." aria-label="Mark to-do as done." />
     <div class="flex-1">
       <h3 class="text-lg font-semibold">{{ props.name }}</h3>
       <p class="text-sm text-gray-600">{{ props.description }} - Due: {{ dueDate }}</p>
     </div>
-    <PencilIcon class="icon-btn" />
+    <button title="Edit to-do." aria-label="Edit to-do.">
+      <PencilIcon class="icon-btn" />
+    </button>
   </li>
 </template>
 
