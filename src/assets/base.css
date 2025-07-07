@@ -18,3 +18,11 @@ input[type=checkbox] {
 .icon-btn {
   @apply size-9 p-2 rounded hover:text-green-500 hover:shadow-sm cursor-pointer transition-all duration-300;
 }
+
+.btn {
+  @apply bg-green-500 text-white px-3 py-1 rounded cursor-pointer hover:shadow transition-shadow duration-300;
+}
+
+.btn.cancel {
+  @apply bg-red-50 text-red-500;
+}

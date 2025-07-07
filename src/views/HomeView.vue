@@ -40,15 +40,18 @@ function handleAddClose() {
 @import 'tailwindcss';
 
 .add-btn {
-  @apply flex justify-center items-center p-2 rounded-full fixed right-4 bottom-4 cursor-pointer shadow-lg w-12 lg:max-w-3xl transition-all duration-700;
+  @apply flex justify-center items-center p-2 fixed right-4 bottom-4 cursor-pointer shadow-lg w-12 h-12 lg:max-w-3xl transition-all duration-700;
   background-color: #00c951;
+  border-radius: 99px;
 }
 
 .add-btn.expanded {
   background-color: #ffffff;
   width: 80vw;
+  height: 200px;
   right: 50%;
   bottom: 50%;
   transform: translateX(50%) translateY(50%);
+  border-radius: 4px;
 }
 </style>
