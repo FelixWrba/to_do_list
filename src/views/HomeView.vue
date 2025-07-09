@@ -7,19 +7,26 @@
     <PlusIcon class="size-8 text-white" />
   </button>
 
-  <AddModal ref="addModal" @close="handleAddClose" :is-open="isAddModalOpen" />
+  <AddModal @close="handleAddClose" :is-open="isAddModalOpen" />
+
+  <EditModal @close="isEditModalOpen = false" :is-open="isEditModalOpen" />
+  <button @click="isEditModalOpen = true">Open edit modal</button>
 </template>
 
 <script setup>
-import { useTodoStore } from '@/stores/todoStore';
 import TodoItem from '@/components/TodoItem.vue';
 import AddModal from '@/components/AddModal.vue';
+import EditModal from '@/components/EditModal.vue';
+
 import { useTemplateRef, ref } from 'vue';
+import { useTodoStore } from '@/stores/todoStore';
 import { PlusIcon } from '@heroicons/vue/24/solid';
 
 const todoStore = useTodoStore();
 const addBtn = useTemplateRef('addBtn');
+
 const isAddModalOpen = ref(false);
+const isEditModalOpen = ref(false);
 
 function handleSetDone(id, done) {
   todoStore.setDone(id, done);
@@ -48,7 +55,7 @@ function handleAddClose() {
 .add-btn.expanded {
   background-color: #ffffff;
   width: 80vw;
-  height: 200px;
+  height: 280px;
   right: 50%;
   bottom: 50%;
   transform: translateX(50%) translateY(50%);

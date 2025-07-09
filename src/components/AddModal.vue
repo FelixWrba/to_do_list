@@ -1,18 +1,18 @@
 <template>
-  <dialog ref="addDialog" class="add-modal lg:max-w-3xl transition-all duration-300 p-4 rounded">
-    <form @submit.prevent="closeModal" class="flex flex-col gap-4">
+  <dialog ref="addDialog" class="modal lg:max-w-3xl transition-all duration-300 p-4 rounded" @close="closeModal">
+    <form @submit.prevent="addTodo" class="flex flex-col gap-4">
       <h2 class="text-2xl font-semibold">Add to-do</h2>
-      <TextField v-model="formData.name" label="Name" :max-length="50" required :readonly />
-      <TextField v-model="formData.description" label="Description" :max-length="100" :readonly/>
+      <TextField v-model="formData.name" label="Name" :max-length="50" required :write />
+      <TextField v-model="formData.description" label="Description" :max-length="100" :write />
       <div class="flex flex-col">
-        <input type="date" id="due-date"
-          class="border border-gray-300 focus:border-green-500 outline-0 transition-all duration-300 rounded flex-1 p-1">
-          <label for="due-date" class="text-gray-500 text-end text-sm" :readonly>Due Date</label>
+        <input type="date" id="due-date" v-model="formData.dueDate"
+          class="border border-gray-300 focus:border-green-500 outline-0 transition-all duration-300 rounded flex-1 p-1" required>
+        <label for="due-date" class="text-gray-500 text-end text-sm" :write>Due Date</label>
       </div>
 
       <div>
         <button type="submit" class="btn mr-2">Add</button>
-        <button type="reset" class="btn cancel" @click="closeModal">Cancel</button>
+        <button type="button" class="btn cancel" @click="closeModal">Cancel</button>
       </div>
     </form>
   </dialog>
@@ -21,29 +21,45 @@
 <script setup>
 import { useTemplateRef, watch, ref } from 'vue';
 import TextField from './TextField.vue';
+import { useTodoStore } from '@/stores/todoStore';
 
 const addDialog = useTemplateRef('addDialog');
+const todoStore = useTodoStore();
+
 const emit = defineEmits(['close']);
 const { isOpen } = defineProps(['isOpen']);
 
-const formData = ref({ name: '', description: '', dueDate: '' });
-const readonly = ref(true);
+const initialFormData = { name: '', description: '', dueDate: new Date().toLocaleDateString('en-CA') };
+const formData = ref({ ...initialFormData });
+const write = ref(false);
 
 function closeModal() {
+  // closing animation
   addDialog.value.classList.remove('open');
   document.querySelector('meta[name=theme-color]').setAttribute('content', '#00c951');
   setTimeout(() => addDialog.value.close(), 300);
   emit('close');
-  readonly.value = true;
+
+  // reset and make inputs immutable
+  formData.value = { ...initialFormData };
+  write.value = false;
 }
 
 function openModal() {
+  // opening animation
   addDialog.value.showModal();
   setTimeout(() => {
     addDialog.value.classList.add('open');
     document.querySelector('meta[name=theme-color]').setAttribute('content', '#00b549');
-    readonly.value = false;
+    // make inputs mutable
+    write.value = true;
   }, 500);
+}
+
+function addTodo() {
+  todoStore.addTodo(formData.value);
+
+  closeModal();
 }
 
 watch(() => isOpen, newIsOpen => {
@@ -55,24 +71,3 @@ watch(() => isOpen, newIsOpen => {
   }
 });
 </script>
-
-<style>
-.add-modal {
-  width: 80vw;
-  top: 50%;
-  left: 50%;
-  transform: translateX(-50%) translateY(-50%);
-  opacity: 0;
-}
-
-.add-modal::backdrop {
-  opacity: 0;
-  transition: all 300ms;
-  background-color: rgba(0, 0, 0, 0.1);
-}
-
-.add-modal.open,
-.add-modal.open::backdrop {
-  opacity: 1;
-}
-</style>

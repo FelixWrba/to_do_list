@@ -26,3 +26,26 @@ input[type=checkbox] {
 .btn.cancel {
   @apply bg-red-50 text-red-500;
 }
+
+.btn.fade {
+  @apply bg-green-50 text-green-500;
+}
+
+.modal {
+  width: 80vw;
+  top: 50%;
+  left: 50%;
+  transform: translateX(-50%) translateY(-50%);
+  opacity: 0;
+}
+
+.modal::backdrop {
+  opacity: 0;
+  transition: all 300ms;
+  background-color: rgba(0, 0, 0, 0.1);
+}
+
+.modal.open,
+.modal.open::backdrop {
+  opacity: 1;
+}

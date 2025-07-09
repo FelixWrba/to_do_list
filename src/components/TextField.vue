@@ -2,7 +2,7 @@
   <div class="flex flex-col relative">
     <input type="text" :id="id" v-model="modelValue"
       class="border border-gray-300 focus:border-green-500 outline-0 transition-all duration-300 rounded flex-1 p-1 peer"
-      :aria-labelledby="id" autocomplete="off" spellcheck="false" :required="required" :readonly="readonly" />
+      :aria-labelledby="id" autocomplete="off" spellcheck="false" :required="required" :readonly="!write" />
 
     <label :for="id"
       :class="'absolute left-1 text-gray-500 transition-all bg-white duration-300 px-1 ' + (isFloating ? '-top-2.5 text-sm' : 'top-1 text-base peer-focus:-top-2.5 peer-focus:text-sm')">
@@ -16,7 +16,7 @@
 <script setup>
 import { computed } from 'vue';
 
-const { label, maxLength, required, readonly } = defineProps(['label', 'maxLength', 'required', 'readonly']);
+const { label, maxLength, required, write } = defineProps(['label', 'maxLength', 'required', 'write']);
 const modelValue = defineModel({
   set(value) {
     return value.slice(0, maxLength);
