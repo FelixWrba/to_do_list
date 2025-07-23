@@ -6,7 +6,8 @@
       <TextField v-model="formData.description" label="Description" :max-length="100" :write />
       <div class="flex flex-col">
         <input type="date" id="due-date" v-model="formData.dueDate"
-          class="border border-gray-300 focus:border-green-500 outline-0 transition-all duration-300 rounded flex-1 p-1" required>
+          class="border border-gray-300 focus:border-green-500 outline-0 transition-all duration-300 rounded flex-1 p-1 w-full"
+          required>
         <label for="due-date" class="text-gray-500 text-end text-sm" :write>Due Date</label>
       </div>
 

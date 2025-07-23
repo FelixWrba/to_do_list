@@ -5,7 +5,7 @@
       :aria-labelledby="id" autocomplete="off" spellcheck="false" :required="required" :readonly="!write" />
 
     <label :for="id"
-      :class="'absolute left-1 text-gray-500 transition-all bg-white duration-300 px-1 ' + (isFloating ? '-top-2.5 text-sm' : 'top-1 text-base peer-focus:-top-2.5 peer-focus:text-sm')">
+      :class="'absolute left-1 text-gray-500 peer-focus:text-green-500 transition-all bg-white duration-300 px-1 ' + (isFloating ? '-top-2.5 text-xs' : 'top-1 text-base peer-focus:-top-2.5 peer-focus:text-xs')">
       {{ label }}
     </label>
 
@@ -23,6 +23,6 @@ const modelValue = defineModel({
   }
 });
 
-const id = label.toLowerCase().replace(/\s+/g, '-');
+const id = label.toLowerCase().replace(/\s+/g, '-') + Math.round(Math.random() * 100);
 const isFloating = computed(() => modelValue.value && modelValue.value.length > 0);
 </script>

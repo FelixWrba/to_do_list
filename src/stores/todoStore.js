@@ -12,6 +12,7 @@ export const useTodoStore = defineStore('todo', () => {
   }, { deep: true });
 
   function addTodo(todo) {
+    todo = { ...todo, done: false, id: new Date().getTime() };
     todos.value = [...todos.value, todo];
   }
 

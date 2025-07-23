@@ -1,6 +1,6 @@
 <template>
   <ul class="flex flex-col gap-4 m-4">
-    <TodoItem v-for="todo in todoStore.todos" :key="todo.id" v-bind="todo" @set-done="handleSetDone" />
+    <TodoItem v-for="todo in todoStore.todos" :key="todo.id" v-bind="todo" @set-done="handleSetDone" @open-edit="openEdit" />
   </ul>
 
   <button class="add-btn" title="Add to-do." aria-label="Add to-do." @click="addTodo" ref="addBtn">
@@ -9,8 +9,7 @@
 
   <AddModal @close="handleAddClose" :is-open="isAddModalOpen" />
 
-  <EditModal @close="isEditModalOpen = false" :is-open="isEditModalOpen" />
-  <button @click="isEditModalOpen = true">Open edit modal</button>
+  <EditModal @close="isEditModalOpen = false" :is-open="isEditModalOpen" :btn-data="editBtnData" :edit-id />
 </template>
 
 <script setup>
@@ -28,6 +27,9 @@ const addBtn = useTemplateRef('addBtn');
 const isAddModalOpen = ref(false);
 const isEditModalOpen = ref(false);
 
+const editBtnData = ref(null);
+const editId = ref(null);
+
 function handleSetDone(id, done) {
   todoStore.setDone(id, done);
 }
@@ -40,6 +42,12 @@ function addTodo() {
 function handleAddClose() {
   addBtn.value.classList.remove('expanded');
   isAddModalOpen.value = false;
+}
+
+function openEdit(id, btnData) {
+  isEditModalOpen.value = true;
+  editBtnData.value = btnData;
+  editId.value = id;
 }
 </script>
 
@@ -55,7 +63,7 @@ function handleAddClose() {
 .add-btn.expanded {
   background-color: #ffffff;
   width: 80vw;
-  height: 280px;
+  height: 304px;
   right: 50%;
   bottom: 50%;
   transform: translateX(50%) translateY(50%);

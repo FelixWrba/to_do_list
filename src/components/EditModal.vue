@@ -6,7 +6,7 @@
       <TextField v-model="formData.description" label="Description" :max-length="100" :write />
       <div class="flex flex-col">
         <input type="date" id="due-date" v-model="formData.dueDate"
-          class="border border-gray-300 focus:border-green-500 outline-0 transition-all duration-300 rounded flex-1 p-1"
+          class="border border-gray-300 focus:border-green-500 outline-0 transition-all duration-300 rounded flex-1 p-1 w-full"
           required>
         <label for="due-date" class="text-gray-500 text-end text-sm" :write>Due Date</label>
       </div>
@@ -14,7 +14,9 @@
       <div class="flex gap-2">
         <button type="submit" class="btn">Edit</button>
         <button type="button" class="btn fade" @click="closeModal">Cancel</button>
-        <button type="button" class="btn cancel ml-auto inline-flex items-center gap-1" @click="deleteTodo"><TrashIcon class="size-4"/> Delete</button>
+        <button type="button" class="btn cancel ml-auto inline-flex items-center gap-1" @click="deleteTodo">
+          <TrashIcon class="size-4" /> Delete
+        </button>
       </div>
     </form>
   </dialog>
@@ -28,7 +30,7 @@ import { TrashIcon } from '@heroicons/vue/24/solid';
 const editDialog = useTemplateRef('editDialog');
 
 const emit = defineEmits(['close']);
-const { isOpen } = defineProps(['isOpen']);
+const { isOpen, btnData, editId } = defineProps(['isOpen', 'btnData', 'editId']);
 
 const initialFormData = { name: '', description: '', dueDate: new Date().toLocaleDateString('en-CA') };
 const formData = ref({ ...initialFormData });
@@ -56,6 +58,8 @@ function openModal() {
   setTimeout(() => {
     write.value = true;
   }, 500);
+
+  console.log(btnData, editId);
 }
 
 function editTodo() {
