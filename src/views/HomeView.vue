@@ -1,6 +1,13 @@
 <template>
   <ul class="flex flex-col gap-4 m-4">
-    <TodoItem v-for="todo in todoStore.todos" :key="todo.id" v-bind="todo" @set-done="handleSetDone" @open-edit="openEdit" />
+    <TodoItem v-for="(todo, i) in todoStore.sorted" :key="todo.id" v-bind="todo" @set-done="handleSetDone"
+      @open-edit="openEdit"
+      :date-label="getDateLabel(todoStore.sorted[i - 1]?.dueDate) !== getDateLabel(todo.dueDate) ? getDateLabel(todo.dueDate) : null" />
+
+    <li v-if="todoStore.todos.length < 1" class="flex gap-2 items-center text-gray-600 font-semibold">
+      <NoSymbolIcon class="size-6"/>
+      <p>To-do list is empty.</p>
+    </li>
   </ul>
 
   <button class="add-btn" title="Add to-do." aria-label="Add to-do." @click="addTodo" ref="addBtn">
@@ -9,7 +16,7 @@
 
   <AddModal @close="handleAddClose" :is-open="isAddModalOpen" />
 
-  <EditModal @close="isEditModalOpen = false" :is-open="isEditModalOpen" :btn-data="editBtnData" :edit-id />
+  <EditModal @close="isEditModalOpen = false" :is-open="isEditModalOpen" :edit-id />
 </template>
 
 <script setup>
@@ -19,7 +26,7 @@ import EditModal from '@/components/EditModal.vue';
 
 import { useTemplateRef, ref } from 'vue';
 import { useTodoStore } from '@/stores/todoStore';
-import { PlusIcon } from '@heroicons/vue/24/solid';
+import { PlusIcon, NoSymbolIcon } from '@heroicons/vue/24/solid';
 
 const todoStore = useTodoStore();
 const addBtn = useTemplateRef('addBtn');
@@ -27,7 +34,6 @@ const addBtn = useTemplateRef('addBtn');
 const isAddModalOpen = ref(false);
 const isEditModalOpen = ref(false);
 
-const editBtnData = ref(null);
 const editId = ref(null);
 
 function handleSetDone(id, done) {
@@ -44,10 +50,40 @@ function handleAddClose() {
   isAddModalOpen.value = false;
 }
 
-function openEdit(id, btnData) {
+function openEdit(id) {
   isEditModalOpen.value = true;
-  editBtnData.value = btnData;
   editId.value = id;
+}
+
+function getDateLabel(dueDate) {
+  const dueDateOffset = Math.ceil((new Date(dueDate).getTime() - new Date().getTime()) / 86400000);
+  if (dueDateOffset < 0) {
+    return 'Overdue';
+  }
+  if (dueDateOffset === 0) {
+    return 'Today';
+  }
+  if (dueDateOffset === 1) {
+    return 'Tomorrow';
+  }
+  if (dueDateOffset < 7) {
+    return 'This Week';
+  }
+  if (dueDateOffset < 30) {
+    return 'This Month';
+  }
+  if (dueDateOffset < 365) {
+    return 'This Year';
+  }
+  if (dueDateOffset < 3653) {
+    return 'This Decade';
+  }
+  if (dueDateOffset < 36535) {
+    return 'This Century';
+  }
+  else {
+    return 'idk when';
+  }
 }
 </script>
 

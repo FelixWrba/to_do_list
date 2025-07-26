@@ -1,10 +1,12 @@
 import { defineStore } from 'pinia';
-import { ref, watch } from 'vue';
+import { ref, watch, computed } from 'vue';
 
 export const useTodoStore = defineStore('todo', () => {
   // Todo structure: { name: string; description: string; done: boolean; dueDate: "yyyy-mm-dd"; id: number; }
   // load todos from localStorage if they exist
-  const todos = ref(JSON.parse(localStorage.getItem('todos') || '[{ "name": "Test", "description": "This is a simple test to-do.", "done": true, "dueDate": "yyyy-mm-dd", "id": 1 }]'));
+  const todos = ref(JSON.parse(localStorage.getItem('todos') || '[]'));
+
+  const sorted = computed(() => todos.value.sort((a, b) => new Date(a.dueDate).getTime() - new Date(b.dueDate).getTime()));
 
   // sync todos with localStorage
   watch(todos, (newTodos) => {
@@ -36,11 +38,23 @@ export const useTodoStore = defineStore('todo', () => {
     todos.value = todos.value.filter(todo => todo.id !== id);
   }
 
+  function getTodoBy(id) {
+    const index = todos.value.findIndex(todo => todo.id === id);
+
+    if (index < 0) {
+      return { name: '', description: '', dueDate: new Date().toLocaleDateString('en-CA') };
+    }
+
+    return { ...todos.value[index] };
+  }
+
   return {
     todos,
+    sorted,
     addTodo,
     setDone,
     editTodo,
     deleteTodo,
+    getTodoBy,
   }
 });

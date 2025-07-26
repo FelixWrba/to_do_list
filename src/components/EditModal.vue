@@ -1,7 +1,8 @@
 <template>
-  <dialog ref="editDialog" class="modal lg:max-w-3xl transition-all duration-300 p-4 rounded" @close="closeModal">
+  <dialog ref="editDialog" class="modal edit-modal lg:max-w-3xl transition-all duration-300 p-4 rounded"
+    @close="closeModal">
     <form @submit.prevent="editTodo" class="flex flex-col gap-4">
-      <h2 class="text-2xl font-semibold">Edit to-do Homework</h2>
+      <h2 class="text-2xl font-semibold">Edit to-do {{ formData.name }}</h2>
       <TextField v-model="formData.name" label="Name" :max-length="50" required :write />
       <TextField v-model="formData.description" label="Description" :max-length="100" :write />
       <div class="flex flex-col">
@@ -26,15 +27,17 @@
 import { useTemplateRef, watch, ref } from 'vue';
 import TextField from './TextField.vue';
 import { TrashIcon } from '@heroicons/vue/24/solid';
+import { useTodoStore } from '@/stores/todoStore';
+
+const todoStore = useTodoStore();
+const emit = defineEmits(['close']);
+const { isOpen, editId } = defineProps(['isOpen', 'editId']);
 
 const editDialog = useTemplateRef('editDialog');
-
-const emit = defineEmits(['close']);
-const { isOpen, btnData, editId } = defineProps(['isOpen', 'btnData', 'editId']);
-
-const initialFormData = { name: '', description: '', dueDate: new Date().toLocaleDateString('en-CA') };
-const formData = ref({ ...initialFormData });
 const write = ref(false);
+
+const formData = ref(todoStore.getTodoBy(editId));
+watch(() => editId, newId => formData.value = todoStore.getTodoBy(newId));
 
 function closeModal() {
   // closing animation
@@ -43,8 +46,7 @@ function closeModal() {
   setTimeout(() => editDialog.value.close(), 300);
   emit('close');
 
-  // reset and make inputs immutable
-  formData.value = { ...initialFormData };
+  // make inputs immutable
   write.value = false;
 }
 
@@ -58,20 +60,21 @@ function openModal() {
   setTimeout(() => {
     write.value = true;
   }, 500);
-
-  console.log(btnData, editId);
 }
 
 function editTodo() {
-  // TODO: Add edit function
+  todoStore.editTodo(editId, formData.value);
 
   closeModal();
 }
 
 function deleteTodo() {
   const choice = window.confirm('Should this to-do be deleted? This action cannot be undone.');
-  console.log(choice ? 'to-do deleted' : 'to-do not deleted');
-  // TODO: Add delete function
+
+  if (choice) {
+    todoStore.deleteTodo(editId);
+    closeModal()
+  };
 }
 
 watch(() => isOpen, newIsOpen => {
@@ -83,3 +86,13 @@ watch(() => isOpen, newIsOpen => {
   }
 });
 </script>
+
+<style>
+.edit-modal {
+  scale: .8;
+}
+
+.edit-modal.open {
+  scale: 1;
+}
+</style>
