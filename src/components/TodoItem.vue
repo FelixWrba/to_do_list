@@ -1,6 +1,6 @@
 <template>
   <!-- DATE LABEL -->
-  <li v-if="props.dateLabel" class="text-gray-600 text-sm font-semibold">{{ dateLabel }}</li>
+  <h2 v-if="props.dateLabel" class="text-gray-600 text-sm font-semibold">{{ dateLabel }}</h2>
 
   <!-- TODO ITEM -->
   <li class="flex gap-2 items-center">
