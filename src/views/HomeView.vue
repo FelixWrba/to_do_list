@@ -1,21 +1,30 @@
 <template>
+  <!-- TODO LIST -->
   <ul class="flex flex-col gap-4 m-4">
     <TodoItem v-for="(todo, i) in todoStore.sorted" :key="todo.id" v-bind="todo" @set-done="handleSetDone"
       @open-edit="openEdit"
       :date-label="getDateLabel(todoStore.sorted[i - 1]?.dueDate) !== getDateLabel(todo.dueDate) ? getDateLabel(todo.dueDate) : null" />
 
     <li v-if="todoStore.todos.length < 1" class="flex gap-2 items-center text-gray-600 font-semibold">
-      <NoSymbolIcon class="size-6"/>
+      <NoSymbolIcon class="size-6" />
       <p>To-do list is empty.</p>
     </li>
   </ul>
 
+  <!-- ADD TODO INPUT FIELD -->
+  <form class="fixed max-w-xl bottom-4 not-md:left-4 md:w-full right-20 p-1 pt-3 shadow rounded bg-white"
+    @submit.prevent="addTodo">
+    <TextField label="Add to-do" max-length="50" v-model="addTodoField" required />
+  </form>
+
+  <!-- ADD TODO BUTTON -->
   <button class="add-btn" title="Add to-do." aria-label="Add to-do." @click="addTodo" ref="addBtn">
-    <PlusIcon class="size-8 text-white" />
+    <CheckIcon class="size-8 text-white" v-show="addTodoField" />
+    <PlusIcon class="size-8 text-white" v-show="!addTodoField" />
   </button>
 
+  <!-- MODALS -->
   <AddModal @close="handleAddClose" :is-open="isAddModalOpen" />
-
   <EditModal @close="isEditModalOpen = false" :is-open="isEditModalOpen" :edit-id />
 </template>
 
@@ -23,13 +32,16 @@
 import TodoItem from '@/components/TodoItem.vue';
 import AddModal from '@/components/AddModal.vue';
 import EditModal from '@/components/EditModal.vue';
+import TextField from '@/components/TextField.vue';
 
 import { useTemplateRef, ref } from 'vue';
 import { useTodoStore } from '@/stores/todoStore';
-import { PlusIcon, NoSymbolIcon } from '@heroicons/vue/24/solid';
+import { PlusIcon, NoSymbolIcon, CheckIcon } from '@heroicons/vue/24/solid';
 
 const todoStore = useTodoStore();
+
 const addBtn = useTemplateRef('addBtn');
+const addTodoField = ref('');
 
 const isAddModalOpen = ref(false);
 const isEditModalOpen = ref(false);
@@ -41,8 +53,15 @@ function handleSetDone(id, done) {
 }
 
 function addTodo() {
-  addBtn.value.classList.add('expanded');
-  isAddModalOpen.value = true;
+  if (addTodoField.value) {
+    todoStore.addTodo({ name: addTodoField.value, description: '', dueDate: new Date().toLocaleDateString('en-CA') });
+
+    addTodoField.value = '';
+  }
+  else {
+    addBtn.value.classList.add('expanded');
+    isAddModalOpen.value = true;
+  }
 }
 
 function handleAddClose() {

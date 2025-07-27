@@ -16,7 +16,7 @@
 <script setup>
 import { computed } from 'vue';
 
-const { label, maxLength, required, write } = defineProps(['label', 'maxLength', 'required', 'write']);
+const { label, maxLength, required = false, write = true } = defineProps(['label', 'maxLength', 'required', 'write']);
 const modelValue = defineModel({
   set(value) {
     return value.slice(0, maxLength);
