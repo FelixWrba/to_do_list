@@ -23,6 +23,10 @@ input[type=checkbox] {
   @apply bg-green-500 text-white px-3 py-1 rounded cursor-pointer hover:shadow transition-shadow duration-300;
 }
 
+.btn.full {
+  @apply w-full rounded-full text-center max-w-sm;
+}
+
 .btn.cancel {
   @apply bg-red-50 text-red-500;
 }

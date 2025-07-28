@@ -1,34 +1,45 @@
 <template>
-  <!-- TODO LIST -->
-  <ul class="flex flex-col gap-4 m-4">
-    <TodoItem v-for="(todo, i) in todoStore.sorted" :key="todo.id" v-bind="todo" @set-done="handleSetDone"
-      @open-edit="openEdit"
-      :date-label="getDateLabel(todoStore.sorted[i - 1]?.dueDate) !== getDateLabel(todo.dueDate) ? getDateLabel(todo.dueDate) : null" />
+  <Header />
 
-    <li v-if="todoStore.todos.length < 1" class="flex gap-2 items-center text-gray-600 font-semibold">
-      <NoSymbolIcon class="size-6" />
-      <p>To-do list is empty.</p>
-    </li>
-  </ul>
+  <main class="max-w-4xl m-auto mb-8 min-h-screen">
 
-  <!-- ADD TODO INPUT FIELD -->
-  <form class="fixed max-w-xl bottom-4 not-md:left-4 md:w-full right-20 p-1 pt-3 shadow rounded bg-white"
-    @submit.prevent="addTodo">
-    <TextField label="Add to-do" max-length="50" v-model="addTodoField" required />
-  </form>
+    <!-- TODO LIST -->
+    <ul class="flex flex-col gap-4 m-4">
+      <TodoItem v-for="(todo, i) in todoStore.sorted" :key="todo.id" v-bind="todo" @set-done="handleSetDone"
+        @open-edit="openEdit"
+        :date-label="getDateLabel(todoStore.sorted[i - 1]?.dueDate) !== getDateLabel(todo.dueDate) ? getDateLabel(todo.dueDate) : null" />
 
-  <!-- ADD TODO BUTTON -->
-  <button class="add-btn" title="Add to-do." aria-label="Add to-do." @click="addTodo" ref="addBtn">
-    <CheckIcon class="size-8 text-white" v-show="addTodoField" />
-    <PlusIcon class="size-8 text-white" v-show="!addTodoField" />
-  </button>
+      <li v-if="todoStore.todos.length < 1" class="flex flex-col gap-2 items-center text-center max-w-sm m-auto">
+        <InformationCircleIcon class="size-8" />
+        <p>Your to-do list is empty. Press (+) on the bottom right to add a to-do to the list.</p>
+      </li>
+    </ul>
 
-  <!-- MODALS -->
-  <AddModal @close="handleAddClose" :is-open="isAddModalOpen" />
-  <EditModal @close="isEditModalOpen = false" :is-open="isEditModalOpen" :edit-id />
+    <!-- ADD TODO INPUT FIELD -->
+    <form
+      class="fixed max-w-xl bottom-4 not-md:left-4 md:w-full right-20 p-1 pt-3 shadow rounded bg-white focus-within:bottom-1/2"
+      @submit.prevent="addTodo">
+      <TextField label="Enter new to-do" max-length="50" v-model="addTodoField" required />
+    </form>
+
+    <!-- ADD TODO BUTTON -->
+    <button class="add-btn" title="Add to-do." aria-label="Add to-do." @click="addTodo" ref="addBtn">
+      <CheckIcon class="size-8 text-white" v-show="addTodoField" />
+      <PlusIcon class="size-8 text-white" v-show="!addTodoField" />
+    </button>
+
+    <!-- MODALS -->
+    <AddModal @close="handleAddClose" :is-open="isAddModalOpen" />
+    <EditModal @close="isEditModalOpen = false" :is-open="isEditModalOpen" :edit-id />
+
+
+  </main>
+  <Footer />
 </template>
 
 <script setup>
+import Header from '@/components/Header.vue';
+import Footer from '@/components/Footer.vue';
 import TodoItem from '@/components/TodoItem.vue';
 import AddModal from '@/components/AddModal.vue';
 import EditModal from '@/components/EditModal.vue';
@@ -36,7 +47,8 @@ import TextField from '@/components/TextField.vue';
 
 import { useTemplateRef, ref } from 'vue';
 import { useTodoStore } from '@/stores/todoStore';
-import { PlusIcon, NoSymbolIcon, CheckIcon } from '@heroicons/vue/24/solid';
+import { PlusIcon, CheckIcon } from '@heroicons/vue/24/solid';
+import { InformationCircleIcon } from '@heroicons/vue/24/outline';
 
 const todoStore = useTodoStore();
 

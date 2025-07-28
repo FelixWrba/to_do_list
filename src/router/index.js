@@ -1,5 +1,6 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import HomeView from '../views/HomeView.vue'
+import OnboardingView from '@/views/OnboardingView.vue';
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -9,7 +10,18 @@ const router = createRouter({
       name: 'home',
       component: HomeView,
     },
+    {
+      path: '/onboarding/:page?',
+      name: 'onboarding',
+      component: OnboardingView,
+    }
   ],
-})
+});
 
-export default router
+router.beforeEach((to, from) => {
+  if (!localStorage.getItem('boarded') && to.name !== 'onboarding') {
+    return { name: 'onboarding', params: { page: 1 } };
+  }
+});
+
+export default router;
