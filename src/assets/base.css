@@ -24,7 +24,7 @@ input[type=checkbox] {
 }
 
 .btn.full {
-  @apply w-full rounded-full text-center max-w-sm;
+  @apply w-full rounded-full text-center max-w-sm active:brightness-95 transition-all duration-300;
 }
 
 .btn.cancel {

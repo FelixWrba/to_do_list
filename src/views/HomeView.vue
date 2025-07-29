@@ -1,7 +1,7 @@
 <template>
   <Header />
 
-  <main class="max-w-4xl m-auto mb-8 min-h-screen">
+  <main class="max-w-4xl m-auto pb-28 min-h-screen">
 
     <!-- TODO LIST -->
     <ul class="flex flex-col gap-4 m-4">
