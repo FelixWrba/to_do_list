@@ -1,7 +1,7 @@
 <template>
-  <main class="p-8 max-w-screen max-h-screen overflow-hidden">
+  <main :class="`p-8 max-w-screen min-h-screen overflow-x-hidden ${hasLoaded ? '' : 'overflow-y-hidden'}`">
 
-    <div :class="[!hasLoaded ? 'fade-in' : '','flex gap-2 mb-8 dots m-auto w-fit']">
+    <div :class="[!hasLoaded ? 'fade-in' : '', 'flex gap-2 mb-8 dots m-auto w-fit']">
       <div v-for="page in pages"
         :class="page == route.params.page || (!route.params.page && page == 1) ? 'current' : ''" :key="page"></div>
     </div>
@@ -9,13 +9,14 @@
     <transition :name="direction === 'forward' ? 'slide-left' : 'slide-right'" mode="out-in">
 
       <section v-if="route.params.page == 1 || !route.params.page" class="flex flex-col items-center" :key="1">
-        <img src="/icons/icon-512.png" alt="App icon of to-do app"
-          :class="[!hasLoaded ? 'fly-in-1 ' : '', 'size-32 png-shadow']">
+        <div :class="!hasLoaded ? 'fly-in-1 ' : ''">
+          <img src="/icons/icon-512.png" alt="App icon of to-do app" :class="['size-32 png-shadow']">
+        </div>
 
         <h1 :class="[!hasLoaded ? 'fly-in-2' : '', 'text-2xl font-semibold my-4']">Welcome to <span
-            class="text-green-500">To-do app</span></h1>
+            class="bg-gradient-to-br from-green-500 to-blue-500 text-transparent bg-clip-text">myTasks:</span> <u class="text-blue-500 opacity-50">online</u></h1>
 
-        <p :class="!hasLoaded ? 'fly-in-3' : ''">This app helps you organize your tasks effortlessly in one place:</p>
+        <p :class="!hasLoaded ? 'fly-in-3' : ''">This simple, yet powerful app helps you organize your tasks effortlessly in one place:</p>
 
         <ul :class="!hasLoaded ? 'fly-in-3 my-8' : 'my-8'">
           <li>✅ Check off to-dos</li>
@@ -113,18 +114,23 @@ onBeforeRouteUpdate((to, from, next) => {
   height: 0.5em;
   border-radius: 50%;
   background-color: #d1d5db;
-  transition: all 300ms;
+  transition: all 600ms;
 }
 
 .dots div.current {
   background-color: #6b7280;
 }
 
-.slide-right-enter-active,
+
 .slide-right-leave-active,
-.slide-left-enter-active,
+
 .slide-left-leave-active {
-  transition: all 0.3s ease;
+  transition: all .3s ease-in;
+}
+
+.slide-right-enter-active,
+.slide-left-enter-active {
+  transition: all .3s ease-out;
 }
 
 .slide-left-enter-from,
@@ -140,15 +146,15 @@ onBeforeRouteUpdate((to, from, next) => {
 }
 
 .fly-in-1 {
-  animation: fly-in 1s 0.2s both;
-}
-
-.fly-in-2 {
   animation: fly-in 1s 0.4s both;
 }
 
-.fly-in-3 {
+.fly-in-2 {
   animation: fly-in 1s 0.6s both;
+}
+
+.fly-in-3 {
+  animation: fly-in 1s 0.8s both;
 }
 
 .fade-in {
@@ -158,7 +164,8 @@ onBeforeRouteUpdate((to, from, next) => {
 @keyframes fly-in {
   0% {
     opacity: 0;
-    transform: scale(5) translateY(50vh);
+    transform: scale(.5) translateY(50vh);
+    filter: blur(16px);
   }
 }
 
@@ -166,6 +173,7 @@ onBeforeRouteUpdate((to, from, next) => {
   0% {
     transform: scale(1.5);
     opacity: 0;
+    filter: blur(8px);
   }
 }
 </style>
