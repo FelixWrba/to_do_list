@@ -1,6 +1,7 @@
 {
-    "name": "To-do List",
-    "short_name": "To-do List",
+    "name": "myTasks: online",
+    "short_name": "myTasks",
+    "description": "Meet myTasks online: a simple, yet powerful to-do list app for managing your tasks. Check off to-dos and plan your entire week. Sync all tasks across your devices for free.",
     "theme_color": "#00c951",
     "background_color": "#ffffff",
     "display": "standalone",

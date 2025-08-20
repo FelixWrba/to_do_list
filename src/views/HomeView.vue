@@ -4,26 +4,36 @@
   <main class="max-w-4xl m-auto pb-28 min-h-screen">
 
     <!-- TODO LIST -->
-    <ul class="flex flex-col gap-4 m-4">
+    <TransitionGroup tag="ul" class="flex flex-col gap-4 m-4" name="list">
+
+      <!-- TODO ITEM -->
       <TodoItem v-for="(todo, i) in todoStore.sorted" :key="todo.id" v-bind="todo" @set-done="handleSetDone"
         @open-edit="openEdit"
         :date-label="getDateLabel(todoStore.sorted[i - 1]?.dueDate) !== getDateLabel(todo.dueDate) ? getDateLabel(todo.dueDate) : null" />
 
+      <!-- EMPTY MESSAGE -->
       <li v-if="todoStore.todos.length < 1" class="flex flex-col gap-2 items-center text-center max-w-sm m-auto">
         <InformationCircleIcon class="size-8" />
         <p>Your to-do list is empty. Press (+) on the bottom right to add a to-do to the list.</p>
       </li>
-    </ul>
+
+    </TransitionGroup>
+
+    <div class="flex flex-col gap-2 items-center p-4">
+      <progress id="progress" :value="progress" :max="todoStore.todos.length" class="progress"></progress>
+      <label for="progress" class="text-gray-600 text-sm">{{ Math.round(progress / todoStore.todos.length * 100) }}% Done</label>
+    </div>
 
     <!-- ADD TODO INPUT FIELD -->
     <form
-      class="fixed max-w-xl bottom-4 not-md:left-4 md:w-full right-20 p-1 pt-3 shadow rounded bg-white focus-within:bottom-1/2"
+      class="peer fixed max-w-xl bottom-4 not-md:left-4 md:w-full right-20 p-1 pt-3 shadow rounded bg-white focus-within:bottom-1/2 md:focus-within:bottom-4"
       @submit.prevent="addTodo">
       <TextField label="Enter new to-do" max-length="50" v-model="addTodoField" required />
     </form>
 
     <!-- ADD TODO BUTTON -->
-    <button class="add-btn" title="Add to-do." aria-label="Add to-do." @click="addTodo" ref="addBtn">
+    <button class="add-btn bottom-4 peer-focus-within:bottom-1/2 md:peer-focus-within:bottom-4" title="Add to-do."
+      aria-label="Add to-do." @click="addTodo" ref="addBtn">
       <CheckIcon class="size-8 text-white" v-show="addTodoField" />
       <PlusIcon class="size-8 text-white" v-show="!addTodoField" />
     </button>
@@ -31,7 +41,6 @@
     <!-- MODALS -->
     <AddModal @close="handleAddClose" :is-open="isAddModalOpen" />
     <EditModal @close="isEditModalOpen = false" :is-open="isEditModalOpen" :edit-id />
-
 
   </main>
   <Footer />
@@ -45,12 +54,13 @@ import AddModal from '@/components/AddModal.vue';
 import EditModal from '@/components/EditModal.vue';
 import TextField from '@/components/TextField.vue';
 
-import { useTemplateRef, ref } from 'vue';
+import { useTemplateRef, ref, computed } from 'vue';
 import { useTodoStore } from '@/stores/todoStore';
 import { PlusIcon, CheckIcon } from '@heroicons/vue/24/solid';
 import { InformationCircleIcon } from '@heroicons/vue/24/outline';
 
 const todoStore = useTodoStore();
+const progress = computed(() => todoStore.todos.reduce((sum, todo) => todo.done ? sum + 1 : sum, 0));
 
 const addBtn = useTemplateRef('addBtn');
 const addTodoField = ref('');
@@ -87,7 +97,13 @@ function openEdit(id) {
 }
 
 function getDateLabel(dueDate) {
-  const dueDateOffset = Math.ceil((new Date(dueDate).getTime() - new Date().getTime()) / 86400000);
+  const today = new Date();
+  const due = new Date(dueDate)
+
+  const startOfToday = new Date(today.getFullYear(), today.getMonth(), today.getDate());
+  const startOfDue = new Date(due.getFullYear(), due.getMonth(), due.getDate());
+  const dueDateOffset = Math.floor((startOfDue - startOfToday) / 86400000);
+
   if (dueDateOffset < 0) {
     return 'Overdue';
   }
@@ -97,24 +113,31 @@ function getDateLabel(dueDate) {
   if (dueDateOffset === 1) {
     return 'Tomorrow';
   }
-  if (dueDateOffset < 7) {
+  if (dueDateOffset <= (7 - today.getDay())) {
     return 'This Week';
   }
-  if (dueDateOffset < 30) {
+  if (
+    dueDateOffset <= (new Date(today.getFullYear(), today.getMonth() + 1, 0).getDate() - today.getDate())
+  ) {
     return 'This Month';
   }
-  if (dueDateOffset < 365) {
+  if (due.getFullYear() === today.getFullYear()) {
     return 'This Year';
   }
-  if (dueDateOffset < 3653) {
+  if ((due.getFullYear() === today.getFullYear() + 1) && today.getMonth() === 11) {
+    return 'Next Year';
+  }
+  if (due.getFullYear() - 10 <= today.getFullYear()) {
     return 'This Decade';
   }
-  if (dueDateOffset < 36535) {
+  if (due.getFullYear() - 100 <= today.getFullYear()) {
     return 'This Century';
   }
-  else {
-    return 'idk when';
+  if (due.getFullYear() - 1000 <= today.getFullYear()) {
+    return 'This Millenium';
   }
+
+  return 'idk when';
 }
 </script>
 
@@ -122,7 +145,7 @@ function getDateLabel(dueDate) {
 @import 'tailwindcss';
 
 .add-btn {
-  @apply flex justify-center items-center p-2 fixed right-4 bottom-4 cursor-pointer shadow-lg w-12 h-12 lg:max-w-3xl transition-all duration-700;
+  @apply flex justify-center items-center p-2 fixed right-4 cursor-pointer shadow-lg w-12 h-12 lg:max-w-3xl transition-all duration-700;
   background-color: #00c951;
   border-radius: 99px;
 }
@@ -135,5 +158,30 @@ function getDateLabel(dueDate) {
   bottom: 50%;
   transform: translateX(50%) translateY(50%);
   border-radius: 4px;
+}
+
+.list-enter-active,
+.list-leave-active {
+  transition: all .5s ease;
+}
+
+.list-enter-from,
+.list-leave-to {
+  opacity: 0;
+  transform: translateY(-16px);
+}
+
+.progress {
+  @apply h-4 appearance-none w-full max-w-sm;
+}
+
+.progress::-webkit-progress-bar {
+  @apply bg-slate-100 rounded-full border border-slate-300;
+}
+
+.progress::-webkit-progress-value {
+  @apply bg-green-500 rounded-full transition-all duration-300;
+  border: none;
+  box-shadow: none;
 }
 </style>

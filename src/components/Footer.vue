@@ -20,7 +20,7 @@
         <li><router-link class="underline" to="/">Home</router-link></li>
         <li><router-link class="underline" to="/onboarding">Onboarding</router-link></li>
         <li><router-link class="underline" to="/account">Account</router-link></li>
-        <li><router-link class="underline" to="/login">Login</router-link></li>
+        <li><router-link class="underline" to="/account/login">Login</router-link></li>
       </ul>
     </div>
   </footer>

@@ -29,7 +29,7 @@
       </section>
 
       <section v-else-if="route.params.page == 2" class="flex flex-col items-center" :key="2">
-        <img src="/icons/icon-512.png" alt="App icon of to-do app" class="size-32 png-shadow">
+        <img src="/img/add_circle.png" alt="Plus circle icon" class="size-28">
 
         <h1 class="text-2xl font-semibold my-4">How to <span class="text-green-500">create a to-do</span></h1>
 
@@ -51,7 +51,7 @@
       </section>
 
       <section v-else-if="route.params.page == 3" class="flex flex-col items-center" :key="3">
-        <img src="/icons/icon-512.png" alt="App icon of to-do app" class="size-32 png-shadow">
+        <img src="/img/edit.png" alt="Pen icon" class="size-28">
 
         <h1 class="text-2xl font-semibold my-4"> <span class="text-green-500">Managing</span> your list</h1>
 
