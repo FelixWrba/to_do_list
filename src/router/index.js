@@ -4,12 +4,18 @@ import OnboardingView from '@/views/OnboardingView.vue';
 import AccountView from '@/views/AccountView.vue';
 import LoginView from '@/views/LoginView.vue';
 import SignupView from '@/views/SignupView.vue';
+import LandingView from '@/views/LandingView.vue';
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
     {
       path: '/',
+      name: 'landing',
+      component: LandingView,
+    },
+    {
+      path: '/home',
       name: 'home',
       component: HomeView,
     },
@@ -36,10 +42,5 @@ const router = createRouter({
   ],
 });
 
-router.beforeEach((to, from) => {
-  if (!localStorage.getItem('boarded') && to.name !== 'onboarding') {
-    return { name: 'onboarding', params: { page: 1 } };
-  }
-});
 
 export default router;

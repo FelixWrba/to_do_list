@@ -17,10 +17,11 @@
     <div>
       <h3 class="font-semibold">Pages</h3>
       <ul class="flex flex-wrap gap-2">
-        <li><router-link class="underline" to="/">Home</router-link></li>
-        <li><router-link class="underline" to="/onboarding">Onboarding</router-link></li>
-        <li><router-link class="underline" to="/account">Account</router-link></li>
+        <li><router-link class="underline" to="/home">Home</router-link></li>
         <li><router-link class="underline" to="/account/login">Login</router-link></li>
+        <li><router-link class="underline" to="/account">Account</router-link></li>
+        <li><router-link class="underline" to="/onboarding">Onboarding</router-link></li>
+        <li><router-link class="underline" to="/">Landing</router-link></li>
       </ul>
     </div>
   </footer>

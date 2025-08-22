@@ -2,7 +2,7 @@
   <div class="flex flex-col relative">
     <input :type :id="id" v-model="modelValue"
       class="border border-gray-300 focus:border-green-500 outline-0 transition-all duration-300 rounded flex-1 p-1 peer"
-      :aria-labelledby="label" :autocomplete spellcheck="false" :required="required" :readonly="!write" />
+      :aria-labelledby="id" :autocomplete spellcheck="false" :required="required" :readonly="!write" />
 
     <label :for="id"
       :class="'absolute left-1 text-gray-500 peer-focus:text-green-500 transition-all bg-white duration-300 px-1 ' + (isFloating ? '-top-2.5 text-xs' : 'top-1 text-base peer-focus:-top-2.5 peer-focus:text-xs')">
