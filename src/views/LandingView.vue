@@ -10,7 +10,7 @@
     </div>
 
     <!-- Hero Section -->
-    <header class="mt-32 text-center px-6 max-w-4xl mx-auto">
+    <header class="mt-24 text-center px-6 max-w-4xl mx-auto">
       <h1 class="text-4xl font-bold mb-4">
         <span class="bg-gradient-to-br from-green-500 to-blue-500 text-transparent bg-clip-text">myTasks:</span> <u
           class="text-blue-500 opacity-50">online</u> - Free To-Do List App for Work & Life
@@ -31,11 +31,16 @@
         <StarIcon class="stroke-yellow-500 fill-yellow-300 size-5" />
         <StarIcon class="stroke-yellow-500 fill-yellow-300 size-5" />
         <StarIcon class="stroke-yellow-500 fill-yellow-300 size-5" />
+        <p class="text-gray-700 ml-2">Trusted by dozens of people worldwide<sup>1</sup></p>
       </div>
 
-      <p class="text-gray-700 mt-1">Trusted by dozens of people worldwide<sup>1</sup></p>
 
     </header>
+
+    <section class="mt-8 -mb-8">
+      <img src="/img/phone.webp" alt="Screenshot of myTasks online dashboard with task lists and calendar"
+        class="rounded-xl shadow-lg mx-auto h-96">
+    </section>
 
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320">
       <path fill="#2b7fff" fill-opacity="1"
@@ -43,11 +48,6 @@
       </path>
     </svg>
     <div class="text-white bg-gradient-to-b from-blue-500 to-green-500">
-
-      <!-- <section class="mt-12">
-        <img src="/img/edit.png" alt="Screenshot of myTasks online dashboard with task lists and calendar"
-          class="rounded-xl shadow-lg mx-auto h-28">
-      </section> -->
 
       <!-- Features -->
       <section class="px-6 mx-auto max-w-4xl">
@@ -91,7 +91,8 @@
 
   <section class="mt-16 px-6 mx-auto max-w-4xl text-sm text-gray-600">
     <ol>
-      <li><sup>1</sup>The count is based on users who clicked on ENTER THE APP at /onboarding/3 and had neither an account nor any tasks saved. Stars are not based on ratings.</li>
+      <li><sup>1</sup>The count is based on users who clicked on ENTER THE APP at /onboarding/3 and had neither an
+        account nor any tasks saved. Stars are not based on ratings.</li>
     </ol>
   </section>
 

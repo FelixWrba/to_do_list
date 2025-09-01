@@ -1,0 +1,9 @@
+[build]
+    command = "vite build && node scripts/sw_builder.mjs"
+    publish = "dist"
+
+[[headers]]
+    for = "/sw.js"
+    [headers.values]
+    Cache-Control = "no cache, no store, must revalidate"
+    Service-Worker-Allowed = "/"
