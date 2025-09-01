@@ -21,21 +21,31 @@
 
     <div class="flex flex-col gap-2 items-center p-4">
       <progress id="progress" :value="progress" :max="todoStore.todos.length" class="progress"></progress>
-      <label for="progress" class="text-gray-600 text-sm">{{ Math.round(progress / todoStore.todos.length * 100) }}% Done</label>
+      <label for="progress" class="text-gray-600 text-sm">{{ Math.round(progress / todoStore.todos.length * 100) || 0
+        }}% Done</label>
     </div>
 
     <!-- ADD TODO INPUT FIELD -->
     <form
-      class="peer fixed max-w-xl bottom-4 not-md:left-4 md:w-full right-20 p-1 pt-3 shadow rounded bg-white focus-within:bottom-1/2 md:focus-within:bottom-4"
+      class="peer fixed max-w-xl bottom-4 not-md:left-4 md:w-full right-20 shadow-md rounded-full bg-green-50/50 backdrop-blur-sm focus-within:bottom-1/2 md:focus-within:bottom-4 focus-within:bg-green-200/50 transition-colors duration-300 delay-75 border border-gray-300/50 focus-within:border-green-300/50"
       @submit.prevent="addTodo">
-      <TextField label="Enter new to-do" max-length="50" v-model="addTodoField" required />
+      <div class="relative" v-show="delayedFocus">
+        <ul class="fixed -top-10 pb-1 mb-2 flex gap-1 overflow-x-auto w-chipbar z-50">
+          <button v-for="(chip, i) in dayChips" @click="selectDate(chip.value)"
+            :class="`chip ${chip.value === dayCount ? 'current' : ''}`" type="button" :key="i">{{ chip.name }}</button>
+        </ul>
+      </div>
+      <input type="text" placeholder="Enter new to-do" v-model="addTodoField" required
+        class="border-0 outline-0 text-inherit text-base p-3 w-full" id="todo-input-field" spellcheck="false"
+        autocomplete="off" aria-label="To-do input field" @focus="focus" @blur="unfocus" ref="addTodoFieldEl">
     </form>
 
     <!-- ADD TODO BUTTON -->
-    <button class="add-btn bottom-4 peer-focus-within:bottom-1/2 md:peer-focus-within:bottom-4" title="Add to-do."
-      aria-label="Add to-do." @click="addTodo" ref="addBtn">
-      <CheckIcon class="size-8 text-white" v-show="addTodoField" />
-      <PlusIcon class="size-8 text-white" v-show="!addTodoField" />
+    <button
+      :class="`add-btn bottom-4 peer-focus-within:bottom-1/2 md:peer-focus-within:bottom-4 ${hasTodoFieldFocus && !addTodoField ? 'cursor-not-allowed bg-green-400' : 'cursor-pointer bg-green-500'}`"
+      title="Add to-do." aria-label="Add to-do." @click="addTodo" ref="addBtn">
+      <CheckIcon class="size-8 text-white" v-show="addTodoField || hasTodoFieldFocus" />
+      <PlusIcon class="size-8 text-white" v-show="!addTodoField && !hasTodoFieldFocus" />
     </button>
 
     <!-- MODALS -->
@@ -52,7 +62,6 @@ import Footer from '@/components/Footer.vue';
 import TodoItem from '@/components/TodoItem.vue';
 import AddModal from '@/components/AddModal.vue';
 import EditModal from '@/components/EditModal.vue';
-import TextField from '@/components/TextField.vue';
 
 import { useTemplateRef, ref, computed } from 'vue';
 import { useTodoStore } from '@/stores/todoStore';
@@ -63,7 +72,34 @@ const todoStore = useTodoStore();
 const progress = computed(() => todoStore.todos.reduce((sum, todo) => todo.done ? sum + 1 : sum, 0));
 
 const addBtn = useTemplateRef('addBtn');
-const addTodoField = ref('');
+
+const addTodoField = ref('')
+const addTodoFieldEl = useTemplateRef('addTodoFieldEl');
+const hasTodoFieldFocus = ref(false);
+
+const dayCount = ref(0);
+const dayChips = [
+  { name: 'Today', value: 0 },
+  { name: 'Tomorrow', value: 1 },
+  { name: 'In 2 days', value: 2 },
+  { name: 'In 3 days', value: 3 },
+  { name: 'In a week', value: 7 },
+  { name: 'In a month', value: 30 },
+  { name: 'In a year', value: 365 },
+];
+
+const focus = () => {
+  clearTimeout(delayId);
+  hasTodoFieldFocus.value = true;
+  delayedFocus.value = true;
+};
+const unfocus = () => {
+  hasTodoFieldFocus.value = false;
+  delayId.value = setTimeout(() => delayedFocus.value = false, 500);
+};
+
+const delayedFocus = ref(false);
+const delayId = ref(null);
 
 const isAddModalOpen = ref(false);
 const isEditModalOpen = ref(false);
@@ -76,9 +112,16 @@ function handleSetDone(id, done) {
 
 function addTodo() {
   if (addTodoField.value) {
-    todoStore.addTodo({ name: addTodoField.value, description: '', dueDate: new Date().toLocaleDateString('en-CA') });
+    const dueDate = new Date();
+    dueDate.setDate(dueDate.getDate() + dayCount.value);
+
+    todoStore.addTodo({ name: addTodoField.value.slice(0, 50), description: '', dueDate: dueDate.toLocaleDateString('en-CA') });
 
     addTodoField.value = '';
+    dayCount.value = 0;
+  }
+  else if (delayedFocus.value || hasTodoFieldFocus.value) {
+    addTodoFieldEl.value.focus();
   }
   else {
     addBtn.value.classList.add('expanded');
@@ -139,14 +182,20 @@ function getDateLabel(dueDate) {
 
   return 'idk when';
 }
+
+function selectDate(days) {
+  clearTimeout(delayId.value);
+  delayedFocus.value = true;
+  dayCount.value = days;
+  addTodoFieldEl.value.focus();
+}
 </script>
 
 <style>
 @import 'tailwindcss';
 
 .add-btn {
-  @apply flex justify-center items-center p-2 fixed right-4 cursor-pointer shadow-lg w-12 h-12 lg:max-w-3xl transition-all duration-700;
-  background-color: #00c951;
+  @apply flex justify-center items-center p-2 fixed right-4 shadow-lg w-12 h-12 lg:max-w-3xl transition-all duration-700;
   border-radius: 99px;
 }
 
@@ -183,5 +232,17 @@ function getDateLabel(dueDate) {
   @apply bg-green-500 rounded-full transition-all duration-300;
   border: none;
   box-shadow: none;
+}
+
+.chip {
+  @apply rounded-full px-2 bg-gray-200 text-gray-800 py-0.5 cursor-pointer backdrop-blur-sm transition-colors duration-300 text-nowrap shadow border border-gray-300;
+}
+
+.current {
+  @apply bg-green-200 text-green-800 border-green-300;
+}
+
+.w-chipbar {
+  width: calc(100% + 64px);
 }
 </style>

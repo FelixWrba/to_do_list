@@ -1,5 +1,5 @@
 <template>
-  <header class="bg-green-500 text-white p-2 text-2xl sticky w-full top-0 shadow flex items-center gap-2">
+  <header class="bg-green-500 text-white p-2 text-2xl sticky w-full shadow flex items-center gap-2 top-0">
     <router-link to="/home" aria-label="Return to to-do list" title="Return to to-do list">
       <ArrowLeftIcon class="size-6 cursor-pointer" />
     </router-link>

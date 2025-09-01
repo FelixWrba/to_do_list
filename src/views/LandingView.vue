@@ -6,12 +6,11 @@
         up</router-link>
     </nav>
     <div class="text-2xl absolute top-0 left-0 p-4">
-      <span class="text-green-500 ">myTasks</span> <u class="text-green-300">online</u>
+      <span class="text-green-600">myTasks</span> <u class="text-green-400">online</u>
     </div>
 
     <!-- Hero Section -->
     <header class="mt-32 text-center px-6 max-w-4xl mx-auto">
-
       <h1 class="text-4xl font-bold mb-4">
         <span class="bg-gradient-to-br from-green-500 to-blue-500 text-transparent bg-clip-text">myTasks:</span> <u
           class="text-blue-500 opacity-50">online</u> - Free To-Do List App for Work & Life
@@ -25,6 +24,17 @@
         Started For Free
         <ChevronRightIcon class="size-6 group-hover:translate-x-1 transition-all duration-500 stroke-1 stroke-white" />
       </router-link>
+
+      <div class="flex justify-center mt-6 items-center">
+        <StarIcon class="stroke-yellow-500 fill-yellow-300 size-5" />
+        <StarIcon class="stroke-yellow-500 fill-yellow-300 size-5" />
+        <StarIcon class="stroke-yellow-500 fill-yellow-300 size-5" />
+        <StarIcon class="stroke-yellow-500 fill-yellow-300 size-5" />
+        <StarIcon class="stroke-yellow-500 fill-yellow-300 size-5" />
+      </div>
+
+      <p class="text-gray-700 mt-1">Trusted by dozens of people worldwide<sup>1</sup></p>
+
     </header>
 
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320">
@@ -60,11 +70,12 @@
     <!-- Testimonials / Social Proof -->
     <section class="mt-16 px-6 mx-auto max-w-4xl text-center">
       <h2 class="text-2xl font-semibold mb-6">Loved by productive people worldwide</h2>
-      <blockquote class="italic text-gray-700">
-        "myTasks online has completely changed the way I plan my work and personal life.
-        It's the best free task manager I've ever used."
-      </blockquote>
-      <p class="mt-2">- myTasks user</p>
+      <article v-for="({ msg, author }, i) in testimonials" :key="i" class="mb-12">
+        <blockquote class="italic text-gray-700">
+          „{{ msg }}“
+        </blockquote>
+        <p class="ml-2">{{ author }}</p>
+      </article>
     </section>
 
     <!-- CTA Repeated -->
@@ -72,10 +83,18 @@
       class="mt-16 m-auto w-fit flex flex-col items-center p-4 shadow rounded bg-gradient-to-br from-green-500 to-blue-500">
       <h2 class="text-2xl font-semibold text-white mb-1">Ready to organize your life?</h2>
       <p class="text-white opacity-70 text-sm mb-4">Manage your tasks for free with our simple To-Do App.</p>
-      <a href="/onboarding" class="px-3 py-1 shadow rounded bg-white/70 text-blue-600 font-bold">Start using myTasks</a>
+      <a href="/onboarding" class="px-3 py-1 shadow rounded bg-white/70 text-blue-500 font-semibold">Start using
+        myTasks</a>
     </section>
 
   </main>
+
+  <section class="mt-16 px-6 mx-auto max-w-4xl text-sm text-gray-600">
+    <ol>
+      <li><sup>1</sup>The count is based on users who clicked on ENTER THE APP at /onboarding/3 and had neither an account nor any tasks saved. Stars are not based on ratings.</li>
+    </ol>
+  </section>
+
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320">
     <path fill="#f1f5f9" fill-opacity="1"
       d="M0,288L120,266.7C240,245,480,203,720,202.7C960,203,1200,245,1320,266.7L1440,288L1440,320L1320,320C1200,320,960,320,720,320C480,320,240,320,120,320L0,320Z">
@@ -86,7 +105,7 @@
 
 <script setup>
 import Footer from '@/components/Footer.vue';
-import { ChevronRightIcon } from '@heroicons/vue/24/solid';
+import { ChevronRightIcon, StarIcon } from '@heroicons/vue/24/solid';
 
 const features = [
   {
@@ -104,6 +123,13 @@ const features = [
   {
     name: '🔒 Secure & Free',
     description: 'Enjoy a free to-do list app with privacy and no hidden fees.',
+  },
+];
+
+const testimonials = [
+  {
+    msg: "myTasks online has completely changed the way I plan my work and personal life. It's the best free task manager I've ever used.",
+    author: "Marc, Freelancer 💻",
   },
 ]
 </script>
