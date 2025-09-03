@@ -13,10 +13,10 @@ app.use(router)
 
 app.mount('#app')
 
-if ('serviceWorker' in navigator) {
+if ('serviceWorker' in navigator && window.location.host !== 'localhost:5173') {
   window.addEventListener('load', () => navigator
     .serviceWorker
     .register('/sw.js', { scope: '/' })
-    .catch(console.error)
+    .catch(err => console.error('Caught ' + err))
   );
 }

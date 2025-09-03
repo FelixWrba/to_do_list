@@ -39,7 +39,7 @@
 
     <section class="mt-8 -mb-8">
       <img src="/img/phone.webp" alt="Screenshot of myTasks online dashboard with task lists and calendar"
-        class="rounded-xl shadow-lg mx-auto h-96">
+        class="rounded-xl shadow-lg mx-auto h-96" height="384">
     </section>
 
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320">
