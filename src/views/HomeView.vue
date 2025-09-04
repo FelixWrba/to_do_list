@@ -21,8 +21,21 @@
 
     <div class="flex flex-col gap-2 items-center p-4">
       <progress id="progress" :value="progress" :max="todoStore.todos.length" class="progress"></progress>
-      <label for="progress" class="text-gray-600 text-sm">{{ Math.round(progress / todoStore.todos.length * 100) || 0
-        }}% Done</label>
+      <label for="progress" class="text-gray-600 text-sm">
+        <p class="flex items-center gap-2 mb-2">
+          <ChartPieIcon class="size-5 " />
+          <span> {{ Math.round(progress / todoStore.todos.length * 100) || 0 }}% Done</span>
+        </p>
+        <p class="flex items-center gap-2 mb-2">
+          <ChartBarIcon class="size-5 " />
+          <span>{{ progress }} / {{ todoStore.todos.length }} tasks completed</span>
+        </p>
+      </label>
+      <button class="flex items-center gap-2 btn" @click="shareProgress(progress, todoStore.todos.length)">
+        <ShareIcon class="size-5" /> <span>Share Progress</span>
+      </button>
+      <p v-if="shareError" class="text-sm text-red-600 bg-red-50 p-2 rounded"><b>Failed to share progress: </b>{{
+        shareError }}</p>
     </div>
 
     <!-- ADD TODO INPUT FIELD -->
@@ -66,10 +79,12 @@ import EditModal from '@/components/EditModal.vue';
 import { useTemplateRef, ref, computed } from 'vue';
 import { useTodoStore } from '@/stores/todoStore';
 import { PlusIcon, CheckIcon } from '@heroicons/vue/24/solid';
-import { InformationCircleIcon } from '@heroicons/vue/24/outline';
+import { InformationCircleIcon, ChartPieIcon, ChartBarIcon, ShareIcon } from '@heroicons/vue/24/outline';
 
 const todoStore = useTodoStore();
 const progress = computed(() => todoStore.todos.reduce((sum, todo) => todo.done ? sum + 1 : sum, 0));
+
+const shareError = ref('');
 
 const addBtn = useTemplateRef('addBtn');
 
@@ -188,6 +203,24 @@ function selectDate(days) {
   delayedFocus.value = true;
   dayCount.value = days;
   addTodoFieldEl.value.focus();
+}
+
+function shareProgress(done, all) {
+  if (!navigator.canShare) {
+    shareError.value = 'Your browser does not support sharing. Please update to a newer version.';
+    return;
+  }
+
+  const shareText = {
+    text: `I just completed ${done === all ? 'all of my' : done + ' of ' + all} tasks 🥳! I found this out by tracking📊 my to-dos with myTasks: online! This simple to-do app increased my productivity by 73%📈🔥😎`,
+  };
+
+  navigator
+    .share(shareText)
+    .catch(err => {
+      console.error(err);
+      shareError.value = err;
+    });
 }
 </script>
 

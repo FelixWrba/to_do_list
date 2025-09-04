@@ -38,7 +38,7 @@
     </header>
 
     <section class="mt-8 -mb-8">
-      <img src="/img/phone.webp" alt="Screenshot of myTasks online dashboard with task lists and calendar"
+      <img src="@/assets/img/phone.webp" alt="Screenshot of myTasks online dashboard with task lists and calendar"
         class="rounded-xl shadow-lg mx-auto h-96" height="384">
     </section>
 
@@ -80,7 +80,7 @@
 
     <!-- CTA Repeated -->
     <section
-      class="mt-16 m-auto w-fit flex flex-col items-center p-4 shadow rounded bg-gradient-to-br from-green-500 to-blue-500">
+      class="mt-16 mx-4 sm:m-auto sm:max-w-md text-center flex flex-col items-center p-4 shadow rounded bg-gradient-to-br from-green-500 to-blue-500">
       <h2 class="text-2xl font-semibold text-white mb-1">Ready to organize your life?</h2>
       <p class="text-white opacity-70 text-sm mb-4">Manage your tasks for free with our simple To-Do App.</p>
       <a href="/onboarding" class="px-3 py-1 shadow rounded bg-white/70 text-blue-500 font-semibold">Start using
@@ -119,12 +119,16 @@ const features = [
   },
   {
     name: '💻 Sync Across Devices',
-    description: 'Access your task manager anytime — on desktop, tablet, or mobile.',
+    description: 'Access your tasks anytime and online — on desktop, tablet, or mobile.',
+  },
+  {
+    name: '📊 Progress Tracking',
+    description: 'Visualize and share your productivity with stats and task completion rates.',
   },
   {
     name: '🔒 Secure & Free',
     description: 'Enjoy a free to-do list app with privacy and no hidden fees.',
-  },
+  }
 ];
 
 const testimonials = [

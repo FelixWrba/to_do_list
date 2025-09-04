@@ -10,7 +10,7 @@
 
       <section v-if="route.params.page == 1 || !route.params.page" class="flex flex-col items-center" :key="1">
         <div :class="!hasLoaded ? 'fly-in-1 ' : ''">
-          <img src="/img/app_icon.webp" alt="App icon of to-do app" :class="['size-32 png-shadow']">
+          <img src="@/assets/img/app_icon.webp" alt="App icon of to-do app" :class="['size-32 png-shadow']">
         </div>
 
         <h1 :class="[!hasLoaded ? 'fly-in-2' : '', 'text-2xl font-semibold my-4']">Welcome to <span
@@ -32,7 +32,7 @@
       </section>
 
       <section v-else-if="route.params.page == 2" class="flex flex-col items-center" :key="2">
-        <img src="/img/add_circle.webp" alt="Plus circle icon" class="size-28">
+        <img src="@/assets/img/add_circle.webp" alt="Plus circle icon" class="size-28">
 
         <h1 class="text-2xl font-semibold my-4">How to <span class="text-green-500">create a to-do</span></h1>
 
@@ -54,7 +54,7 @@
       </section>
 
       <section v-else-if="route.params.page == 3" class="flex flex-col items-center" :key="3">
-        <img src="/img/edit.webp" alt="Pen icon" class="size-28">
+        <img src="@/assets/img/edit.webp" alt="Pen icon" class="size-28">
 
         <h1 class="text-2xl font-semibold my-4"> <span class="text-green-500">Managing</span> your list</h1>
 
