@@ -20,8 +20,7 @@
       <router-link to="/account/signup" class="btn" v-else>Sign up</router-link>
     </section>
     <!-- LOCAL ACCOUNT INFO -->
-    <section class="flex bg-red-100 mx-4 rounded p-2 gap-2 items-center text-red-900"
-      v-if="!isLoggedIn">
+    <section class="flex bg-red-100 mx-4 rounded p-2 gap-2 items-center text-red-900" v-if="!isLoggedIn">
       <InformationCircleIcon class="size-8 text-red-500 shrink-0" />
       <div>
         <h2 class="font-semibold">You are using a local Account</h2>
@@ -38,6 +37,11 @@
 
     <input type="checkbox" v-model="isLoggedIn">
 
+    <section class="m-4">
+      <h2 class="text-xl font-semibold">Do you like the app?</h2>
+      <p>Recommend myTasks to friends: <button class="btn" @click="shareApp">Share your experience</button></p>
+    </section>
+
   </main>
 
   <Footer />
@@ -50,4 +54,33 @@ import { InformationCircleIcon } from '@heroicons/vue/24/outline';
 import { ref } from 'vue';
 
 const isLoggedIn = ref(false);
+
+function shareApp() {
+  if (!navigator.canShare) {
+    alert('Tell your friends about myTasks: online!');
+    return;
+  }
+
+  const shareTexts = {
+    en: `🚀 I've been using this super simple to-do app and it's a game-changer!
+✅ Add & check off tasks in seconds
+📅 Plan your week with ease
+💻 Syncs across all devices
+🔒 100% free & private
+Try it out and stay on top of your day: mytasksonline.netlify.app`,
+    de: `🚀 Ich nutzte in letzter Zeit diese supereinfache To-Do-App und sie ist ein echter Game-Changer!
+✅ Erstellen und Abhaken von Aufgaben in Sekunden
+📅 Plane Deine Woche mit Leichtigkeit
+💻 Synchronisiere To-Dos über alle Geräte
+🔒 100% kostenlos & sicher
+Probier es aus und behalte den Überblick über Deinen Tag - auf mytasksonline.netlify.app`,
+  };
+  const userLang = navigator.language.includes('de') ? 'de' : 'en';
+
+  navigator
+    .share({ text: shareTexts[userLang] })
+    .catch(err => {
+      console.error(err);
+    });
+}
 </script>

@@ -8,11 +8,16 @@ for = "/*"
 Cache-Control = "public, max-age=0, must revalidate"
 
 [[headers]]
+for = "/manifest.json"
+[headers.values]
+Cache-Control = "public, max-age=2592000, must revalidate"
+
+[[headers]]
 for = "/assets/*"
 [headers.values]
 Cache-Control = "public, max-age=31536000, immutable"
 
 [[headers]]
-for = "/icons"
+for = "/icons/*"
 [headers.values]
-Cache-Control = "public, max-age=1209600, must revalidate"
+Cache-Control = "public, max-age=2592000, must revalidate"

@@ -35,7 +35,7 @@
         <ShareIcon class="size-5" /> <span>Share Progress</span>
       </button>
       <p v-if="shareError" class="text-sm text-red-600 bg-red-50 p-2 rounded"><b>Failed to share progress: </b>{{
-        shareError }}</p>
+        shareError }} <button @click="shareError = ''" class="underline cursor-pointer">(Hide Error)</button></p>
     </div>
 
     <!-- ADD TODO INPUT FIELD -->
@@ -211,12 +211,14 @@ function shareProgress(done, all) {
     return;
   }
 
-  const shareText = {
-    text: `I just completed ${done === all ? 'all of my' : done + ' of ' + all} tasks 🥳! I found this out by tracking📊 my to-dos with myTasks: online! This simple to-do app increased my productivity by 73%📈🔥😎`,
+  const shareTexts = {
+    en: `I just completed ${done === all ? 'all of my' : done + ' of ' + all} tasks 🥳! I found this out by tracking📊 my to-dos with myTasks: online! This simple To-Do App increased my productivity by 73%📈🔥😎 Get the app: mytasksonline.netlify.app`,
+    de: `I habe gerade ${done === all ? 'all meine' : done + ' von ' + all} Aufgaben erledigt 🥳! Das habe ich durch's Tracken📊 meiner To-Dos mit myTasks: online herausgefunden! Diese einfache To-Do App hat meine Produktivität um 73% gesteigert📈🔥😎 Hol dir die App: mytasksonline.netlify.app`,
   };
+  const userLang = navigator.language.includes('de') ? 'de' : 'en';
 
   navigator
-    .share(shareText)
+    .share({ text: shareTexts[userLang] })
     .catch(err => {
       console.error(err);
       shareError.value = err;

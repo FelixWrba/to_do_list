@@ -1,6 +1,6 @@
 <template>
   <main class="pt-12">
-    <nav class="absolute top-0 right-0 flex gap-4 p-4">
+    <nav class="absolute top-0 right-0 flex gap-4 p-4 z-10 bg-white/50">
       <router-link to="/account/login" class="px-2 py-1 outline outline-gray-200 rounded">Login</router-link>
       <router-link to="/account/signup" class="px-2 py-1 outline outline-green-500 rounded bg-green-500 text-white">Sign
         up</router-link>
@@ -31,15 +31,14 @@
         <StarIcon class="stroke-yellow-500 fill-yellow-300 size-5" />
         <StarIcon class="stroke-yellow-500 fill-yellow-300 size-5" />
         <StarIcon class="stroke-yellow-500 fill-yellow-300 size-5" />
-        <p class="text-gray-700 ml-2">Trusted by dozens of people worldwide<sup>1</sup></p>
+        <p class="text-gray-700 ml-2 text-start">Trusted by dozens of people worldwide<sup>1</sup></p>
       </div>
-
 
     </header>
 
-    <section class="mt-8 -mb-8">
-      <img src="@/assets/img/phone.webp" alt="Screenshot of myTasks online dashboard with task lists and calendar"
-        class="rounded-xl shadow-lg mx-auto h-96" height="384">
+    <section class="mt-8 px-4">
+      <img src="@/assets/img/main_screenshot.webp" alt="Image showcasing screenshots of the myTasks dashboard with task lists and dates taken on a phone, tablet and laptop."
+        class="mx-auto max-w-4xl main-screenshot bg-gray-100 rounded">
     </section>
 
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320">
@@ -50,7 +49,7 @@
     <div class="text-white bg-gradient-to-b from-blue-500 to-green-500">
 
       <!-- Features -->
-      <section class="px-6 mx-auto max-w-4xl">
+      <section class="px-6 mx-auto max-w-4xl -my-1">
         <h2 class="text-2xl font-semibold mb-6 text-blue-50">Why choose myTasks online?</h2>
         <ul class="grid md:grid-cols-2 gap-8">
           <li v-for="({ name, description }, index) in features" :key="index" class="bg-blue-50 rounded shadow p-2">
@@ -138,3 +137,10 @@ const testimonials = [
   },
 ]
 </script>
+
+<style>
+.main-screenshot {
+  width: 100%;
+  aspect-ratio: 35/19;
+}
+</style>
