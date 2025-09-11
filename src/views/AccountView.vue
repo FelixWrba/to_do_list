@@ -13,14 +13,16 @@
       <UserCircleIcon class="size-12 text-blue-500 shrink-0" />
       <div class="flex-1">
         <h1 class="text-2xl font-semibold">My Account</h1>
-        <p class="text-sm text-gray-600" v-if="isLoggedIn">user@mail.com</p>
+        <p class="text-sm text-gray-600" v-if="authStore.user">{{ authStore.user.email }}</p>
+        <p class="text-sm text-gray-600" v-else-if="authStore.hasAccount">Logged out</p>
         <p class="text-sm text-gray-600" v-else>Local Account</p>
       </div>
-      <button class="btn" v-if="isLoggedIn">Logout</button>
+      <button class="btn" v-if="authStore.user" @click="authStore.signOut()">Logout</button>
+      <router-link to="/account/login" class="btn" v-else-if="authStore.hasAccount">Log in</router-link>
       <router-link to="/account/signup" class="btn" v-else>Sign up</router-link>
     </section>
     <!-- LOCAL ACCOUNT INFO -->
-    <section class="flex bg-red-100 mx-4 rounded p-2 gap-2 items-center text-red-900" v-if="!isLoggedIn">
+    <section class="flex bg-red-100 mx-4 rounded p-2 gap-2 items-center text-red-900" v-if="!authStore.hasAccount">
       <InformationCircleIcon class="size-8 text-red-500 shrink-0" />
       <div>
         <h2 class="font-semibold">You are using a local Account</h2>
@@ -34,8 +36,6 @@
         </div>
       </div>
     </section>
-
-    <input type="checkbox" v-model="isLoggedIn">
 
     <section class="m-4">
       <h2 class="text-xl font-semibold">Do you like the app?</h2>
@@ -51,9 +51,9 @@
 import Footer from '@/components/Footer.vue';
 import { ArrowLeftIcon, UserCircleIcon } from '@heroicons/vue/24/solid';
 import { InformationCircleIcon } from '@heroicons/vue/24/outline';
-import { ref } from 'vue';
+import { useAuthStore } from '@/stores/authStore';
 
-const isLoggedIn = ref(false);
+const authStore = useAuthStore();
 
 function shareApp() {
   if (!navigator.canShare) {

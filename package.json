@@ -11,6 +11,7 @@
   },
   "dependencies": {
     "@heroicons/vue": "^2.2.0",
+    "@supabase/supabase-js": "^2.57.2",
     "@tailwindcss/vite": "^4.1.10",
     "pinia": "^3.0.1",
     "tailwindcss": "^4.1.10",
