@@ -13,7 +13,7 @@
     <header class="mt-24 text-center px-6 max-w-4xl mx-auto">
       <h1 class="text-4xl font-bold mb-4">
         <span class="bg-gradient-to-br from-green-500 to-blue-500 text-transparent bg-clip-text">myTasks:</span> <u
-          class="text-blue-500 opacity-50">online</u> - Free To-Do List App for Work & Life
+          class="text-blue-500 opacity-50">online</u> - Easy To-Do List App for Work & Life
       </h1>
       <p class="text-lg text-gray-700 mb-6">
         Organize tasks, plan your week, and boost productivity with our simple yet powerful online task manager.
@@ -88,14 +88,14 @@
 
   </main>
 
-  <section class="mt-16 px-6 mx-auto max-w-4xl text-sm text-gray-600">
+  <section class="mt-16 px-6 mx-auto max-w-4xl text-xs text-gray-600 mb-6 lg:mb-0">
     <ol>
       <li><sup>1</sup>The count is based on users who clicked on ENTER THE APP at /onboarding/3 and had neither an
         account nor any tasks saved. Stars are not based on ratings.</li>
     </ol>
   </section>
 
-  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320">
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 150 1440 170" class="-mb-1">
     <path fill="#f1f5f9" fill-opacity="1"
       d="M0,288L120,266.7C240,245,480,203,720,202.7C960,203,1200,245,1320,266.7L1440,288L1440,320L1320,320C1200,320,960,320,720,320C480,320,240,320,120,320L0,320Z">
     </path>

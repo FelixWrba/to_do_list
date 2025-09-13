@@ -34,6 +34,9 @@ const router = createRouter({
       component: () => import('@/views/SignupView.vue'),
     }
   ],
+  scrollBehavior(to, from, savedPosition) {
+    return savedPosition || { top: 0 };
+  }
 });
 
 

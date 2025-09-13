@@ -11,16 +11,29 @@
         @open-edit="openEdit"
         :date-label="getDateLabel(todoStore.sorted[i - 1]?.dueDate) !== getDateLabel(todo.dueDate) ? getDateLabel(todo.dueDate) : null" />
 
+
+      <!-- LOADING MESSAGE -->
+      <li v-if="todoStore.isLoadingDB" class="text-center">
+        <div class="flex gap-2 items-center justify-center font-semibold">
+          <span class="size-4 border-2 inline-block rounded-full border-b-transparent animate-spin"></span>
+        <p>Loading</p>
+        </div>
+        <p class="text-sm text-gray-600 mt-2">If your to-do list does not load try to <router-link to="/account/login" class="underline">log in</router-link>.</p>
+      </li>
+
       <!-- EMPTY MESSAGE -->
-      <li v-if="todoStore.todos.length < 1" class="flex flex-col gap-2 items-center text-center max-w-sm m-auto">
+      <li v-else-if="todoStore.todos.length < 1" class="flex flex-col gap-2 items-center text-center max-w-sm m-auto">
         <InformationCircleIcon class="size-8" />
         <p>Your to-do list is empty. Press (+) on the bottom right to add a to-do to the list.</p>
       </li>
 
     </TransitionGroup>
 
-    <div class="flex flex-col gap-2 items-center p-4">
+    <!-- PROGRESS TRACKING -->
+    <div class="flex flex-col gap-2 items-center p-4" v-if="!todoStore.isLoadingDB">
+      <!-- progress stats -->
       <progress id="progress" :value="progress" :max="todoStore.todos.length" class="progress"></progress>
+      <!-- progress stats -->
       <label for="progress" class="text-gray-600 text-sm">
         <p class="flex items-center gap-2 mb-2">
           <ChartPieIcon class="size-5 " />
@@ -31,6 +44,7 @@
           <span>{{ progress }} / {{ todoStore.todos.length }} tasks completed</span>
         </p>
       </label>
+      <!-- progress sharing -->
       <button class="flex items-center gap-2 btn" @click="shareProgress(progress, todoStore.todos.length)">
         <ShareIcon class="size-5" /> <span>Share Progress</span>
       </button>
@@ -55,7 +69,7 @@
 
     <!-- ADD TODO BUTTON -->
     <button
-      :class="`add-btn bottom-4 peer-focus-within:bottom-1/2 md:peer-focus-within:bottom-4 ${hasTodoFieldFocus && !addTodoField ? 'cursor-not-allowed bg-green-400' : 'cursor-pointer bg-green-500'}`"
+      :class="`add-btn bottom-4 peer-focus-within:bottom-1/2 md:peer-focus-within:bottom-4 ${hasTodoFieldFocus && !addTodoField ? 'cursor-not-allowed bg-gray-300' : 'cursor-pointer bg-green-500'}`"
       title="Add to-do." aria-label="Add to-do." @click="addTodo" ref="addBtn">
       <CheckIcon class="size-8 text-white" v-show="addTodoField || hasTodoFieldFocus" />
       <PlusIcon class="size-8 text-white" v-show="!addTodoField && !hasTodoFieldFocus" />

@@ -84,6 +84,10 @@ async function login() {
     return;
   }
 
+  if(!authStore.hasAccount) {
+    authStore.setHasAccount(true);
+  }
+
   authStore.setUser(data.user);
   router.push('/home');
 }

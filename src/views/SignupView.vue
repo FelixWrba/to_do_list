@@ -67,8 +67,10 @@ import { ArrowLeftIcon } from '@heroicons/vue/24/solid';
 import { ref, watch } from 'vue';
 import { supabase } from '@/utils/supabase';
 import { useAuthStore } from '@/stores/authStore';
+import { useTodoStore } from '@/stores/todoStore';
 
 const authStore = useAuthStore();
+const todoStore = useTodoStore();
 
 const formData = ref({
   email: '',
@@ -93,6 +95,14 @@ async function createAccount() {
     signInState.value = 'success';
     authStore.setUser(data.user);
     authStore.setHasAccount(true);
+
+    if (todoStore.todos.length < 1) {
+      supabase
+        .from('tasks')
+        .insert(
+          todoStore.todos.map((todo) => { return { ...todo, user_id: authStore.user.id }; })
+        );
+    }
   }
 }
 

@@ -2,7 +2,7 @@
   <footer class="bg-slate-100 text-slate-900 p-4 pb-28 flex flex-wrap gap-8">
     <div>
       <h3 class="font-semibold">Copyright</h3>
-      <p>&copy;2024-{{ new Date().getFullYear() }} Felix Wrba. All rights reserved.</p>
+      <p>&copy; 2024-{{ new Date().getFullYear() }} Felix Wrba. All rights reserved.</p>
     </div>
     <div>
       <h3 class="font-semibold">Contact</h3>
@@ -12,7 +12,7 @@
     </div>
     <div>
       <h3 class="font-semibold">Assets used</h3>
-      <p>App icon: material symbols 'playlist_add_check' Other: <a href="http://vuejs.org" target="_blank" rel="noopener noreferrer" class="underline">Vue.js</a>, <a href="http://tailwindcss.com" target="_blank" rel="noopener noreferrer" class="underline">Tailwind CSS</a>, <a href="http://heroicons.com" target="_blank" rel="noopener noreferrer" class="underline">Heroicons</a>, Roboto Font</p>
+      <p>App icon: material symbols 'playlist_add_check' Other: <a href="http://vuejs.org" target="_blank" rel="noopener noreferrer" class="underline">Vue.js</a>, <a href="http://tailwindcss.com" target="_blank" rel="noopener noreferrer" class="underline">Tailwind CSS</a>, <a href="http://heroicons.com" target="_blank" rel="noopener noreferrer" class="underline">Heroicons</a>, Roboto Font, <a href="http://supabase.com" target="_blank" rel="noopener noreferrer" class="underline">Supabase</a></p>
     </div>
     <div>
       <h3 class="font-semibold">Pages</h3>
